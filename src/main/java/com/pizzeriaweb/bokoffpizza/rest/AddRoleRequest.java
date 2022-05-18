@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class AddRoleRequest {
-    private String male;
+    private String mail;
     private String roleName;
 }

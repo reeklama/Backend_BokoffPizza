@@ -16,7 +16,7 @@ public class RoleController {
     @PostMapping("/addRole")
     public ResponseEntity<?> addRole(@RequestBody AddRoleRequest request) {
         try {
-            registeredUserService.addRole(request.getMale(), request.getRoleName());
+            registeredUserService.addRole(request.getMail(), request.getRoleName());
             return ResponseEntity.ok("Роль добавлена");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
