@@ -12,7 +12,7 @@ public class Dish {
     private String pictureURL;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "dishe_product",
+    @JoinTable(name = "dishes_products",
             joinColumns = @JoinColumn(name = "dish_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     private Set<Product> products;

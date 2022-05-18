@@ -21,4 +21,8 @@ public class DishService {
         }
         return dishes;
     }
+
+    public Dish findDishByName(String name) {
+       return dishRepository.findDishByName(name);
+    }
 }

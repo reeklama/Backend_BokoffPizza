@@ -24,6 +24,7 @@ public class RegisteredUser implements UserDetails {
 
     @Transient
     private String passwordConfirm;
+
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
 

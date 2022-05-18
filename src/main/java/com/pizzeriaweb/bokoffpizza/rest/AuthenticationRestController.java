@@ -19,7 +19,7 @@ import java.util.Map;
 
 @CrossOrigin( origins = "*", maxAge = 3500)
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/auth")
 public class AuthenticationRestController {
 
     private final AuthenticationManager authenticationManager;
