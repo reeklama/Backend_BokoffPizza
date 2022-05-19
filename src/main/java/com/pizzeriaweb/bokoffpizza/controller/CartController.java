@@ -8,6 +8,7 @@ import com.pizzeriaweb.bokoffpizza.rest.OrderRequestDTO;
 import com.pizzeriaweb.bokoffpizza.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -42,9 +43,11 @@ public class CartController {
     @GetMapping()
     public ResponseEntity<?> checkUserData() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if(auth == null) {
+        boolean isLoggedIn = auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken);
+        if(!isLoggedIn) {
             return ResponseEntity.badRequest().body("Нет информации о пользователе");
         }
+
         String mail = auth.getName();
         Customer customer = userDetailsServiceImpl.findCustomerByUserMail(mail);
         if(customer == null) {
@@ -57,11 +60,9 @@ public class CartController {
 
     @PostMapping
     public ResponseEntity<?> insertOrderInDB(@RequestBody OrderRequestDTO request) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String mail = auth.getName();
-        RegisteredUser user = userDetailsServiceImpl.findUserByMail(mail);
-        customerService.saveCustomerByUserIfNotExists(user, request);
-        Customer customer = user.getCustomer();
+
+        Customer customer = customerService.saveCustomerByOrderRequest(request);
+
         Order order = new Order();
         order.setOrder_date(new Timestamp(System.currentTimeMillis()));
         order.setCustomer(customer);

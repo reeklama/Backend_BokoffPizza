@@ -5,6 +5,9 @@ import com.pizzeriaweb.bokoffpizza.entity.RegisteredUser;
 import com.pizzeriaweb.bokoffpizza.repository.CustomerRepository;
 import com.pizzeriaweb.bokoffpizza.rest.OrderRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,19 +16,46 @@ public class CustomerService {
     @Autowired
     CustomerRepository customerRepository;
 
+    @Autowired
+    UserDetailsServiceImpl userDetailsServiceImpl;
+
     public void saveCustomer(Customer customer) {
         customerRepository.save(customer);
     }
 
-    public void saveCustomerByUserIfNotExists(RegisteredUser user, OrderRequestDTO request) {
-        Customer customer = user.getCustomer();
-        if(customer == null) {
-            customer = new Customer();
-            customer.setFirst_name(request.getFirst_name());
-            customer.setAddress(request.getAddress());
-            customer.setPhone_number(request.getPhone_number());
-            customerRepository.save(customer);
-            user.setCustomer(customer);
+    public Customer setCustomerByRequest(OrderRequestDTO request) {
+        Customer customer = new Customer();
+        customer.setFirst_name(request.getFirst_name());
+        customer.setAddress(request.getAddress());
+        customer.setPhone_number(request.getPhone_number());
+        return customer;
+    }
+
+    public Customer saveCustomerByOrderRequest(OrderRequestDTO request) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        boolean isLoggedIn = auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken);
+
+        Customer customerByPhone = customerRepository.findCustomerByPhoneNumber(request.getPhone_number());
+        if(customerByPhone != null) {
+            return customerByPhone;
         }
+
+        if(!isLoggedIn) {
+            Customer customer = setCustomerByRequest(request);
+            saveCustomer(customer);
+            return customer;
+        }
+
+        String mail = auth.getName();
+        RegisteredUser user = userDetailsServiceImpl.findUserByMail(mail);
+
+        Customer customerByUser = user.getCustomer();
+        if(customerByUser != null) {
+            return customerByUser;
+        }
+        Customer customer = setCustomerByRequest(request);
+        user.setCustomer(customer);
+        saveCustomer(customer);
+        return customer;
     }
 }
