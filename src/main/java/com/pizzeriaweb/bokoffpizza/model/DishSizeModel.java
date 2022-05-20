@@ -1,9 +1,7 @@
 package com.pizzeriaweb.bokoffpizza.model;
 
 import com.pizzeriaweb.bokoffpizza.entity.DishSize;
-
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import lombok.ToString;
 
 public class DishSizeModel {
     private Integer size;

@@ -1,9 +1,8 @@
 package com.pizzeriaweb.bokoffpizza.model;
 
 import com.pizzeriaweb.bokoffpizza.entity.Product;
-import lombok.Data;
+import lombok.ToString;
 
-@Data
 public class ProductModel {
     String name;
 
@@ -11,5 +10,13 @@ public class ProductModel {
         ProductModel  productModel = new ProductModel();
         productModel.setName(product.getName());
         return productModel;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

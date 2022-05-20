@@ -4,7 +4,6 @@ import com.pizzeriaweb.bokoffpizza.entity.Dish;
 import com.pizzeriaweb.bokoffpizza.entity.DishSize;
 import com.pizzeriaweb.bokoffpizza.entity.Product;
 
-import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,7 +11,7 @@ public class DishModel {
     private String name;
     private String pictureURL;
 
-    private Set<ProductModel> productsModels;
+    private Set<ProductModel> productModels;
 
     private Set<DishSizeModel> dishSizeModels;
 
@@ -56,11 +55,11 @@ public class DishModel {
     }
 
     public Set<ProductModel> getProductModels() {
-        return productsModels;
+        return productModels;
     }
 
     public void setProductModels(Set<ProductModel> products) {
-        this.productsModels = products;
+        this.productModels = products;
     }
 
     public Set<DishSizeModel> getDishSizeModels() {
