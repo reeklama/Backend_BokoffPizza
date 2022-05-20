@@ -16,8 +16,7 @@ public class OrderService {
     OrderRepository orderRepository;
 
     public List<Order> getOrdersByUser(RegisteredUser user) {
-        List<Order> orders = orderRepository.findByCustomer(user.getCustomer());
-        return orders;
+        return orderRepository.findByCustomer(user.getCustomer());
     }
 
     public void saveOrder(Order order) {

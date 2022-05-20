@@ -1,10 +1,13 @@
 package com.pizzeriaweb.bokoffpizza.entity;
 
+import lombok.ToString;
+
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "customers")
+@ToString
 public class Customer {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

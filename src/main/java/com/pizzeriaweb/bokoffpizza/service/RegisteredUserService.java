@@ -34,4 +34,12 @@ public class RegisteredUserService {
         registeredUser.addRole(role);
         registeredUserRepository.save(registeredUser);
     }
+
+    public RegisteredUser findByMail(String mail) throws RegisteredUserNotFoundException {
+        RegisteredUser user = registeredUserRepository.findByMail(mail);
+        if (user == null){
+            throw new RegisteredUserNotFoundException("Не найден пользователь с email: " + mail);
+        }
+        return user;
+    }
 }

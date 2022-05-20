@@ -13,19 +13,13 @@ import java.util.Set;
 @Data
 public class OrderModel {
 
-    private Long id;
-
     private java.sql.Timestamp order_date;
-
-    private Long customer_id;
 
     private Set<OrderListModel> orderListModels;
 
     public static OrderModel toModel(Order order) {
         OrderModel orderModel = new OrderModel();
-        orderModel.setId(order.getId());
         orderModel.setOrder_date(order.getOrder_date());
-        orderModel.setCustomer_id(order.getCustomer().getId());
         Set<OrderListModel> orderListModelSet = new HashSet<>();
         for(OrderList orderList : order.getOrderListSet() ) {
             orderListModelSet.add(OrderListModel.toModel(orderList));

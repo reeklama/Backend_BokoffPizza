@@ -71,4 +71,9 @@ public class DishService {
 
         dishRepository.delete(dish);
     }
+
+    public Dish findDishByName(String name) {
+        return dishRepository.findByName(name);
+    }
+
 }
