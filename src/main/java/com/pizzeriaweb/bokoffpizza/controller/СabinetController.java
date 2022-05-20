@@ -32,6 +32,9 @@ public class СabinetController {
             List<OrderModel> ordersList =  new ArrayList<>();
             orderService.getOrdersByUser(registeredUser).forEach(order ->
                     ordersList.add(OrderModel.toModel(order)));
+            if (ordersList.size() == 0){
+                ResponseEntity.ok("У вас пока нет заказов");
+            }
             return ResponseEntity.ok(ordersList);
         } catch (RegisteredUserNotFoundException e) {
             return ResponseEntity.badRequest().body(e);

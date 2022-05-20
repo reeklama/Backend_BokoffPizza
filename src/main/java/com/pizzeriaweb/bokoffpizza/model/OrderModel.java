@@ -4,7 +4,6 @@ import com.pizzeriaweb.bokoffpizza.entity.Order;
 import com.pizzeriaweb.bokoffpizza.entity.OrderList;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.aspectj.weaver.ast.Or;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -21,7 +20,7 @@ public class OrderModel {
         OrderModel orderModel = new OrderModel();
         orderModel.setOrder_date(order.getOrder_date());
         Set<OrderListModel> orderListModelSet = new HashSet<>();
-        for(OrderList orderList : order.getOrderListSet() ) {
+        for(OrderList orderList : order.getOrderLists() ) {
             orderListModelSet.add(OrderListModel.toModel(orderList));
         }
         orderModel.setOrderListModels(orderListModelSet);
