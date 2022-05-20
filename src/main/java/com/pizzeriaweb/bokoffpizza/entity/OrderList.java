@@ -8,18 +8,19 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Data
 @Entity
-@IdClass(OrderAndDish.class)
 @Table(name = "orders_list")
 public class OrderList {
 
     @Id
-    @ManyToOne(cascade=CascadeType.ALL)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    private Long id;
+    @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
 
-    @Id
-    private Long dish_size_id;
-
+    @ManyToOne
+    @JoinColumn(name = "dish_size_id")
+    private DishSize dishSize;
 
     private Long amount;
 
