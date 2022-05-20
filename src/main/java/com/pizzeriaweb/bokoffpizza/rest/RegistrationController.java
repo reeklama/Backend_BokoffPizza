@@ -4,6 +4,7 @@ package com.pizzeriaweb.bokoffpizza.rest;
 import com.pizzeriaweb.bokoffpizza.entity.RegisteredUser;
 import com.pizzeriaweb.bokoffpizza.entity.Role;
 import com.pizzeriaweb.bokoffpizza.exception.PasswordAndPasswordConfirmNotEqual;
+import com.pizzeriaweb.bokoffpizza.exception.TooShortPasswordException;
 import com.pizzeriaweb.bokoffpizza.exception.UserAlreadyExistsException;
 import com.pizzeriaweb.bokoffpizza.repository.RegisteredUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ import java.util.regex.Pattern;
 @RestController
 @RequestMapping("/registration")
 public class RegistrationController {
+
+    private static Integer minPasswordLength = 6;
     @Autowired
     RegisteredUserRepository userRepository;
 
@@ -27,7 +30,7 @@ public class RegistrationController {
     final String regexPattern = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
 
     @PostMapping()
-    public ResponseEntity<?> register(@RequestBody RegistrationRequestDTO request) throws UserAlreadyExistsException, PasswordAndPasswordConfirmNotEqual {
+    public ResponseEntity<?> register(@RequestBody RegistrationRequestDTO request) throws UserAlreadyExistsException, PasswordAndPasswordConfirmNotEqual, TooShortPasswordException {
 
         if(!Pattern.compile(regexPattern).matcher(request.getMail()).matches()) {
             return ResponseEntity.badRequest().body("Некорректный формат почты");
@@ -39,6 +42,9 @@ public class RegistrationController {
         user.setMail(request.getMail());
         if(!request.getPassword().equals(request.getPasswordConfirm())) {
             throw new PasswordAndPasswordConfirmNotEqual("Пароли не совпадают");
+        }
+        if(request.getPassword().length() < minPasswordLength) {
+            throw new TooShortPasswordException("Минимальная длина пароля - " + minPasswordLength + " символов");
         }
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));

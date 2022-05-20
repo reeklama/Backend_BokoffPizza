@@ -1,10 +1,6 @@
 package com.pizzeriaweb.bokoffpizza.model;
 
 import com.pizzeriaweb.bokoffpizza.entity.DishSize;
-
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
 public class DishSizeModel {
     private Long id;
     private Long dish_id;
