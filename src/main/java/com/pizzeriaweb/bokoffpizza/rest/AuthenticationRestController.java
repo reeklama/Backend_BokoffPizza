@@ -1,6 +1,7 @@
 package com.pizzeriaweb.bokoffpizza.rest;
 
 import com.pizzeriaweb.bokoffpizza.entity.RegisteredUser;
+import com.pizzeriaweb.bokoffpizza.entity.Role;
 import com.pizzeriaweb.bokoffpizza.repository.RegisteredUserRepository;
 import com.pizzeriaweb.bokoffpizza.security.JwtTokenProvider;
 import org.springframework.http.HttpStatus;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 @CrossOrigin( origins = "*", maxAge = 3500)
 @RestController
@@ -40,7 +43,12 @@ public class AuthenticationRestController {
             if(user == null) {
                 throw new UsernameNotFoundException("Пользователь не найден");
             }
-            String token = jwtTokenProvider.createToken(request.getMail(), user.getRoles().stream().findFirst().get().toString());
+
+            Set<String> roles = new HashSet<>();
+            for(Role role : user.getRoles()) {
+                roles.add(role.getAuthority());
+            }
+            String token = jwtTokenProvider.createToken(request.getMail(), roles);
             Map<Object, Object> response = new HashMap<>();
             response.put("mail", request.getMail());
             response.put("token", token);
