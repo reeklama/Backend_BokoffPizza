@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @NoArgsConstructor
 @Data
@@ -21,5 +21,5 @@ public class Order {
     private Customer customer;
 
     @OneToMany(mappedBy = "order")
-    private Set<OrderList> orderListSet;
+    private List<OrderList> orderListSet;
 }
