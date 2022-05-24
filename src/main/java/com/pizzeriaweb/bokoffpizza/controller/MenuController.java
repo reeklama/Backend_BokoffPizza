@@ -2,6 +2,7 @@ package com.pizzeriaweb.bokoffpizza.controller;
 
 import com.pizzeriaweb.bokoffpizza.exception.ProductNotFoundException;
 import com.pizzeriaweb.bokoffpizza.model.DishModel;
+import com.pizzeriaweb.bokoffpizza.rest.MenuUpdateRequestDTO;
 import com.pizzeriaweb.bokoffpizza.service.DishService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +36,16 @@ public class MenuController {
             dishService.addDish(request);
 
         } catch (ProductNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.ok("success");
+    }
+
+    @PutMapping("/menu")
+    public ResponseEntity<?> addDish(@RequestBody MenuUpdateRequestDTO request){
+        try {
+            dishService.updateDish(request.getOldDishName(), request.getNewDish());
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
         return ResponseEntity.ok("success");

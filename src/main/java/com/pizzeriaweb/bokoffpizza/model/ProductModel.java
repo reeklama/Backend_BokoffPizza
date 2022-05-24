@@ -1,7 +1,6 @@
 package com.pizzeriaweb.bokoffpizza.model;
 
 import com.pizzeriaweb.bokoffpizza.entity.Product;
-import lombok.ToString;
 
 public class ProductModel {
     String name;

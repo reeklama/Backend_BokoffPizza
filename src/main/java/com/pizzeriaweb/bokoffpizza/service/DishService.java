@@ -4,6 +4,7 @@ package com.pizzeriaweb.bokoffpizza.service;
 import com.pizzeriaweb.bokoffpizza.entity.Dish;
 import com.pizzeriaweb.bokoffpizza.entity.DishSize;
 import com.pizzeriaweb.bokoffpizza.entity.Product;
+import com.pizzeriaweb.bokoffpizza.exception.DishNotFoundException;
 import com.pizzeriaweb.bokoffpizza.exception.EmptyDishesListException;
 import com.pizzeriaweb.bokoffpizza.exception.ProductNotFoundException;
 import com.pizzeriaweb.bokoffpizza.model.DishModel;
@@ -76,4 +77,28 @@ public class DishService {
         return dishRepository.findByName(name);
     }
 
+    public void updateDish(String oldDishName, DishModel newDish) throws ProductNotFoundException, DishNotFoundException {
+        Dish dish = dishRepository.findByName(oldDishName);
+        if (dish == null){
+            throw new DishNotFoundException("Не найдено блюдо с именем: " + oldDishName);
+        }
+        dish.setName(newDish.getName());
+        dish.setPictureURL(newDish.getPictureURL());
+        Set<Product> productSet = new HashSet<>();
+        for (ProductModel productModel: newDish.getProductModels()){
+            Product product = productRepository.findByName(productModel.getName());
+            if (product == null){
+                throw new ProductNotFoundException("Не найден продукт: " + productModel.getName());
+            }
+            productSet.add(product);
+        }
+        dish.setProducts(productSet);
+        Set<DishSize> dishSizeSet = new HashSet<>();
+        for (DishSizeModel dishSizeModel: newDish.getDishSizeModels()){
+            DishSize dishSize = dishSizeRepository.findDishSizeByDish_idAndSize(dish.getId(), dishSizeModel.getSize());
+            dishSize.setPrice(dishSizeModel.getPrice());
+            dishSizeRepository.save(dishSize);
+        }
+        dishRepository.save(dish);
+    }
 }
