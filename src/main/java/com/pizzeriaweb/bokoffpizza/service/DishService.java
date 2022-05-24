@@ -33,21 +33,14 @@ public class DishService {
 
     public List<Dish> getDishes() throws Exception {
         List<Dish> dishes = dishRepository.findAll();
-        if (dishes.size() == 0){
+        if (dishes.size() == 0) {
             throw new EmptyDishesListException("Список блюд пуст");
         }
         return dishes;
     }
 
     public void addDish(DishModel dishModel) throws ProductNotFoundException {
-        Set<Product> productSet = new HashSet<>();
-        for (ProductModel productModel: dishModel.getProductModels()){
-            Product product = productRepository.findByName(productModel.getName());
-            if (product == null){
-                throw new ProductNotFoundException("Не найден продукт: " + productModel.getName());
-            }
-            productSet.add(product);
-        }
+        Set<Product> productSet = productModelSetToProductSet(dishModel.getProductModels());
 
         Dish dish = new Dish();
         dish.setName(dishModel.getName());
@@ -55,7 +48,7 @@ public class DishService {
         dish.setProducts(productSet);
         dishRepository.save(dish);
 
-        for (DishSizeModel dishSizeModel: dishModel.getDishSizeModels()){
+        for (DishSizeModel dishSizeModel : dishModel.getDishSizeModels()) {
             DishSize dishSize = new DishSize();
             dishSize.setDish(dish);
             dishSize.setSize(dishSizeModel.getSize());
@@ -64,37 +57,42 @@ public class DishService {
         }
     }
 
-    public void deleteDish(DishModel dishModel){
+    public void deleteDish(DishModel dishModel) {
         Dish dish = dishRepository.findByName(dishModel.getName());
-        if (dish == null){
+        if (dish == null) {
             return;
         }
 
         dishRepository.delete(dish);
     }
 
-    public Dish findDishByName(String name) {
-        return dishRepository.findByName(name);
-    }
-
-    public void updateDish(String oldDishName, DishModel newDish) throws ProductNotFoundException, DishNotFoundException {
-        Dish dish = dishRepository.findByName(oldDishName);
-        if (dish == null){
-            throw new DishNotFoundException("Не найдено блюдо с именем: " + oldDishName);
-        }
-        dish.setName(newDish.getName());
-        dish.setPictureURL(newDish.getPictureURL());
+    public Set<Product> productModelSetToProductSet(Set<ProductModel> productModelSet) throws ProductNotFoundException {
         Set<Product> productSet = new HashSet<>();
-        for (ProductModel productModel: newDish.getProductModels()){
+        for (ProductModel productModel : productModelSet) {
             Product product = productRepository.findByName(productModel.getName());
-            if (product == null){
+            if (product == null) {
                 throw new ProductNotFoundException("Не найден продукт: " + productModel.getName());
             }
             productSet.add(product);
         }
+        return productSet;
+    }
+
+    public Dish findDishByName(String name) throws DishNotFoundException {
+        Dish dish = dishRepository.findByName(name);
+        if (dish == null){
+            throw new DishNotFoundException("Не найдено блюдо с именем: " + name);
+        }
+        return dish;
+    }
+
+    public void updateDish(String oldDishName, DishModel newDish) throws ProductNotFoundException, DishNotFoundException {
+        Dish dish = findDishByName(oldDishName);
+        dish.setName(newDish.getName());
+        dish.setPictureURL(newDish.getPictureURL());
+        Set<Product> productSet = productModelSetToProductSet(newDish.getProductModels());
         dish.setProducts(productSet);
-        Set<DishSize> dishSizeSet = new HashSet<>();
-        for (DishSizeModel dishSizeModel: newDish.getDishSizeModels()){
+        for (DishSizeModel dishSizeModel : newDish.getDishSizeModels()) {
             DishSize dishSize = dishSizeRepository.findDishSizeByDish_idAndSize(dish.getId(), dishSizeModel.getSize());
             dishSize.setPrice(dishSizeModel.getPrice());
             dishSizeRepository.save(dishSize);

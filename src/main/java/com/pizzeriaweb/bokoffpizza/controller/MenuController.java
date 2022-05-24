@@ -14,12 +14,13 @@ import java.util.List;
 
 @CrossOrigin( origins = "*", maxAge = 3500)
 @RestController
+@RequestMapping("/menu")
 public class MenuController {
 
     @Autowired
     DishService dishService;
 
-    @GetMapping("/menu")
+    @GetMapping
     public ResponseEntity<?> getMenu() {
         try {
             List<DishModel> dishModelList = new ArrayList<>();
@@ -30,18 +31,17 @@ public class MenuController {
         }
     }
 
-    @PostMapping("/menu")
+    @PostMapping
     public ResponseEntity<?> addDish(@RequestBody DishModel request){
         try {
             dishService.addDish(request);
-
         } catch (ProductNotFoundException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
         return ResponseEntity.ok("success");
     }
 
-    @PutMapping("/menu")
+    @PutMapping
     public ResponseEntity<?> addDish(@RequestBody MenuUpdateRequestDTO request){
         try {
             dishService.updateDish(request.getOldDishName(), request.getNewDish());
@@ -51,7 +51,7 @@ public class MenuController {
         return ResponseEntity.ok("success");
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping
     public ResponseEntity<?> deleteDish(@RequestBody DishModel request){
         dishService.deleteDish(request);
         return ResponseEntity.ok("success");

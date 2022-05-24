@@ -1,13 +1,16 @@
 package com.pizzeriaweb.bokoffpizza.entity;
 
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Entity
+@Data
 @Table(name = "registered_users")
 public class RegisteredUser implements UserDetails {
 
@@ -31,53 +34,11 @@ public class RegisteredUser implements UserDetails {
     public RegisteredUser(){
     }
 
-    public Long getRegistered_user_id() {
-        return registered_user_id;
-    }
-
-    public void setRegistered_user_id(Long registered_user_id) {
-        this.registered_user_id = registered_user_id;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) { this.roles = roles; }
-
     public void addRole(Role role) { this.roles.add(role); }
-
-    public String getMail() {
-        return mail;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
-
-    public String getPasswordConfirm() {
-        return passwordConfirm;
-    }
-
-    public void setPasswordConfirm(String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     @Override
@@ -103,10 +64,6 @@ public class RegisteredUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     @Override

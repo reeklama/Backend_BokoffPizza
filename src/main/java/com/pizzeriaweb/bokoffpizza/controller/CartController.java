@@ -1,6 +1,7 @@
 package com.pizzeriaweb.bokoffpizza.controller;
 
 import com.pizzeriaweb.bokoffpizza.entity.*;
+import com.pizzeriaweb.bokoffpizza.exception.DishNotFoundException;
 import com.pizzeriaweb.bokoffpizza.model.CustomerModel;
 import com.pizzeriaweb.bokoffpizza.repository.OrderListRepository;
 import com.pizzeriaweb.bokoffpizza.rest.DishFromOrderDTO;
@@ -59,7 +60,7 @@ public class CartController {
     }
 
     @PostMapping
-    public ResponseEntity<?> insertOrderInDB(@RequestBody OrderRequestDTO request) {
+    public ResponseEntity<?> insertOrderInDB(@RequestBody OrderRequestDTO request) throws DishNotFoundException {
 
         Customer customer = customerService.saveCustomerByOrderRequest(request);
 
