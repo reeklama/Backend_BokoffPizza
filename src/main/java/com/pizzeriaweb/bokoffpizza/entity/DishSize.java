@@ -8,9 +8,7 @@ public class DishSize {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "dish_id")
     private Dish dish;
-    private String unit;
     private Integer size;
     private Integer price;
 
@@ -19,7 +17,6 @@ public class DishSize {
 
     public DishSize(Dish dish, String unit, Integer size, Integer price) {
         this.dish = dish;
-        this.unit = unit;
         this.size = size;
         this.price = price;
     }
@@ -38,14 +35,6 @@ public class DishSize {
 
     public void setDish(Dish dish) {
         this.dish = dish;
-    }
-
-    public String getUnit() {
-        return unit;
-    }
-
-    public void setUnit(String unit) {
-        this.unit = unit;
     }
 
     public Integer getSize() {

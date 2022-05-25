@@ -1,5 +1,6 @@
 package com.pizzeriaweb.bokoffpizza.entity;
 
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -7,6 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "roles")
+@ToString
 public class Role implements GrantedAuthority {
     @Id
     private Long id;
@@ -17,10 +19,6 @@ public class Role implements GrantedAuthority {
     @ManyToMany(mappedBy = "roles")
     private Set<RegisteredUser> registeredUsers;
     public Role() {
-    }
-
-    public Role(Long id) {
-        this.id = id;
     }
 
     public Role(Long id, String name) {

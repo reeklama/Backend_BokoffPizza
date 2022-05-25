@@ -11,8 +11,8 @@ public class Dish {
     private String name;
     private String pictureURL;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "dishes_products",
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "dish_product",
             joinColumns = @JoinColumn(name = "dish_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     private Set<Product> products;

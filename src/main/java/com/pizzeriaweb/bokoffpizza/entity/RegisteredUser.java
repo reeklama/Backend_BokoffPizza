@@ -51,9 +51,9 @@ public class RegisteredUser implements UserDetails {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
+    public void setRoles(Set<Role> roles) { this.roles = roles; }
+
+    public void addRole(Role role) { this.roles.add(role); }
 
     public String getMail() {
         return mail;
