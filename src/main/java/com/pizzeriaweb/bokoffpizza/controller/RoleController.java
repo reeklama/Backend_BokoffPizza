@@ -1,6 +1,6 @@
 package com.pizzeriaweb.bokoffpizza.controller;
 
-import com.pizzeriaweb.bokoffpizza.rest.AddRoleRequest;
+import com.pizzeriaweb.bokoffpizza.rest.AddRoleRequestDTO;
 import com.pizzeriaweb.bokoffpizza.service.RegisteredUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,7 @@ public class RoleController {
     RegisteredUserService registeredUserService;
 
     @PostMapping("/addRole")
-    public ResponseEntity<?> addRole(@RequestBody AddRoleRequest request) {
+    public ResponseEntity<?> addRole(@RequestBody AddRoleRequestDTO request) {
         try {
             registeredUserService.addRole(request.getMail(), request.getRoleName());
             return ResponseEntity.ok("Роль добавлена");

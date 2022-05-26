@@ -1,6 +1,7 @@
 package com.pizzeriaweb.bokoffpizza.controller;
 
 import com.pizzeriaweb.bokoffpizza.model.DishModel;
+import com.pizzeriaweb.bokoffpizza.rest.FavoritesRequestDTO;
 import com.pizzeriaweb.bokoffpizza.service.FavoritesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class FavoritesController {
     }
 
     @PostMapping
-    public ResponseEntity<?> addFavorite(@RequestBody DishModel request, Principal principal){
+    public ResponseEntity<?> addFavorite(@RequestBody FavoritesRequestDTO request, Principal principal){
         try {
             favoritesService.addFavoriteDish(principal.getName(), request.getName());
         } catch (Exception e) {
@@ -38,7 +39,7 @@ public class FavoritesController {
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deleteFavorite(@RequestBody DishModel request, Principal principal){
+    public ResponseEntity<?> deleteFavorite(@RequestBody FavoritesRequestDTO request, Principal principal){
         try {
             favoritesService.deleteFavoriteDish(principal.getName(), request.getName());
         } catch (Exception e) {
