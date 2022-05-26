@@ -48,6 +48,7 @@ public class RegistrationController {
         }
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
+        user.setBanned(false);
         userRepository.save(user);
         return ResponseEntity.ok("Пользователь зарегистрирован!");
     }

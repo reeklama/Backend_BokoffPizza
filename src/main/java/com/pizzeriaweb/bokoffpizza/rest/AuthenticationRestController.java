@@ -40,8 +40,11 @@ public class AuthenticationRestController {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getMail(), request.getPassword()));
             RegisteredUser user = userRepository.findByMail(request.getMail());
+            if(user.isBanned()) {
+                return ResponseEntity.ok("Пользователь заблокирован");
+            }
             if(user == null) {
-                throw new UsernameNotFoundException("Пользователь не найден");
+                return ResponseEntity.badRequest().body("Пользователь не найден");
             }
 
             Set<String> roles = new HashSet<>();

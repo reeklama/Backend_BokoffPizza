@@ -47,4 +47,12 @@ public class RegisteredUserService {
         user.setPassword(password);
         registeredUserRepository.save(user);
     }
+
+    public void deleteUser(RegisteredUser user) {
+        registeredUserRepository.delete(user);
+    }
+
+    public void saveUser(RegisteredUser user) {
+        registeredUserRepository.save(user);
+    }
 }
