@@ -13,7 +13,8 @@ public class RegisteredUser implements UserDetails {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long registered_user_id;
+    @Column(name = "registered_user_id")
+    private Long registeredUserId;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id")
@@ -21,6 +22,9 @@ public class RegisteredUser implements UserDetails {
 
     private String mail;
     private String password;
+
+    @Column(name = "is_banned")
+    private boolean isBanned;
 
     @Transient
     private String passwordConfirm;
@@ -31,12 +35,12 @@ public class RegisteredUser implements UserDetails {
     public RegisteredUser(){
     }
 
-    public Long getRegistered_user_id() {
-        return registered_user_id;
+    public Long getRegisteredUserId() {
+        return registeredUserId;
     }
 
-    public void setRegistered_user_id(Long registered_user_id) {
-        this.registered_user_id = registered_user_id;
+    public void setRegisteredUserId(Long registered_user_id) {
+        this.registeredUserId = registered_user_id;
     }
 
     public Customer getCustomer() {
@@ -111,7 +115,15 @@ public class RegisteredUser implements UserDetails {
 
     @Override
     public String toString(){
-        return registered_user_id.toString() + " " + mail + " " + password;
+        return registeredUserId.toString() + " " + mail + " " + password;
+    }
+
+    public boolean isBanned() {
+        return isBanned;
+    }
+
+    public void setBanned(boolean banned) {
+        isBanned = banned;
     }
 }
 

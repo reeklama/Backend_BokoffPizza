@@ -4,7 +4,6 @@ import com.pizzeriaweb.bokoffpizza.entity.DishSize;
 public class DishSizeModel {
     private Long id;
     private Long dish_id;
-    private String unit;
     private Integer size;
     private Integer price;
 
@@ -12,7 +11,6 @@ public class DishSizeModel {
         DishSizeModel dishSizeModel = new DishSizeModel();
         dishSizeModel.setId(dishSize.getId());
         dishSizeModel.setDish_id(dishSize.getDish().getId());
-        dishSizeModel.setUnit(dishSize.getUnit());
         dishSizeModel.setSize(dishSize.getSize());
         dishSizeModel.setPrice(dishSize.getPrice());
         return dishSizeModel;
@@ -35,14 +33,6 @@ public class DishSizeModel {
 
     public void setDish_id(Long dish_id) {
         this.dish_id = dish_id;
-    }
-
-    public String getUnit() {
-        return unit;
-    }
-
-    public void setUnit(String unit) {
-        this.unit = unit;
     }
 
     public Integer getSize() {

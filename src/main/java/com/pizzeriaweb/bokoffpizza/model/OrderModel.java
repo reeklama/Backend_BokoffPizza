@@ -20,7 +20,7 @@ public class OrderModel {
         OrderModel orderModel = new OrderModel();
         orderModel.setOrder_date(order.getOrder_date());
         Set<OrderListModel> orderListModelSet = new HashSet<>();
-        for(OrderList orderList : order.getOrderLists() ) {
+        for(OrderList orderList : order.getOrderListSet() ) {
             orderListModelSet.add(OrderListModel.toModel(orderList));
         }
         orderModel.setOrderListModels(orderListModelSet);

@@ -42,4 +42,9 @@ public class RegisteredUserService {
         }
         return user;
     }
+
+    public void updateUserPassword(RegisteredUser user, String password) {
+        user.setPassword(password);
+        registeredUserRepository.save(user);
+    }
 }
