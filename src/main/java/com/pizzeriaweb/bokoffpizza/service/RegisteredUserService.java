@@ -10,6 +10,8 @@ import com.pizzeriaweb.bokoffpizza.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class RegisteredUserService {
@@ -54,5 +56,9 @@ public class RegisteredUserService {
 
     public void saveUser(RegisteredUser user) {
         registeredUserRepository.save(user);
+    }
+
+    public List<RegisteredUser> findAll() {
+        return registeredUserRepository.findAll();
     }
 }
