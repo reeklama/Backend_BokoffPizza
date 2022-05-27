@@ -29,7 +29,7 @@ public class UserController {
         return ResponseEntity.ok(mails);
     }
 
-    @PostMapping("/ban")
+    @PutMapping("/ban")
     public ResponseEntity<?> banUsers(@RequestBody UserListDTO banList) {
         List<String> badMails = new ArrayList<>();
         for(String mail : banList.getMails()) {
