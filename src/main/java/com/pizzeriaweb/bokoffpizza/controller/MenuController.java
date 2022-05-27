@@ -42,7 +42,7 @@ public class MenuController {
     }
 
     @PutMapping
-    public ResponseEntity<?> addDish(@RequestBody MenuUpdateRequestDTO request){
+    public ResponseEntity<?> updateDish(@RequestBody MenuUpdateRequestDTO request){
         try {
             dishService.updateDish(request.getOldDishName(), request.getNewDish());
         } catch (Exception e) {
