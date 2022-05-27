@@ -1,8 +1,9 @@
-package com.pizzeriaweb.bokoffpizza.rest;
+package com.pizzeriaweb.bokoffpizza.controller;
 
 import com.pizzeriaweb.bokoffpizza.entity.RegisteredUser;
 import com.pizzeriaweb.bokoffpizza.entity.Role;
 import com.pizzeriaweb.bokoffpizza.repository.RegisteredUserRepository;
+import com.pizzeriaweb.bokoffpizza.rest.AuthenticationRequestDTO;
 import com.pizzeriaweb.bokoffpizza.security.JwtTokenProvider;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -44,7 +44,7 @@ public class CabinetController {
         }
     }
 
-    @PostMapping("/changepass")
+    @PutMapping("/changepass")
     public ResponseEntity<?> changePassword(@RequestBody ChangePassRequestDTO request) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String mail = auth.getName();

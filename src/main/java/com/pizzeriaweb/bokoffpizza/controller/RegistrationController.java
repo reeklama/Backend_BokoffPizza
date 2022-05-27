@@ -1,4 +1,4 @@
-package com.pizzeriaweb.bokoffpizza.rest;
+package com.pizzeriaweb.bokoffpizza.controller;
 
 
 import com.pizzeriaweb.bokoffpizza.entity.RegisteredUser;
@@ -7,6 +7,7 @@ import com.pizzeriaweb.bokoffpizza.exception.PasswordAndPasswordConfirmNotEqual;
 import com.pizzeriaweb.bokoffpizza.exception.TooShortPasswordException;
 import com.pizzeriaweb.bokoffpizza.exception.UserAlreadyExistsException;
 import com.pizzeriaweb.bokoffpizza.repository.RegisteredUserRepository;
+import com.pizzeriaweb.bokoffpizza.rest.RegistrationRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
