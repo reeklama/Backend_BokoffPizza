@@ -48,7 +48,7 @@ public class RegistrationController {
             return ResponseEntity.badRequest().body("Минимальная длина пароля - " + minPasswordLength + " символов");
         }
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
+        user.setRole(new Role(1L, "ROLE_USER"));
         user.setBanned(false);
         userRepository.save(user);
         return ResponseEntity.ok("Пользователь зарегистрирован!");

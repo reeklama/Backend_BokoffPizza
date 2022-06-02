@@ -1,15 +1,15 @@
 package com.pizzeriaweb.bokoffpizza.controller;
 
 import com.pizzeriaweb.bokoffpizza.entity.RegisteredUser;
-import com.pizzeriaweb.bokoffpizza.exception.RegisteredUserNotFoundException;
 import com.pizzeriaweb.bokoffpizza.model.OrderModel;
 import com.pizzeriaweb.bokoffpizza.rest.ChangePassRequestDTO;
 import com.pizzeriaweb.bokoffpizza.service.OrderService;
-import com.pizzeriaweb.bokoffpizza.service.RegisteredUserService;
+import com.pizzeriaweb.bokoffpizza.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +26,7 @@ public class CabinetController {
     OrderService orderService;
 
     @Autowired
-    RegisteredUserService registeredUserService;
+    UserDetailsServiceImpl userDetailsService;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -34,12 +34,12 @@ public class CabinetController {
     @GetMapping
     public ResponseEntity<?> cab(Principal principal){
         try {
-            RegisteredUser registeredUser = registeredUserService.findByMail(principal.getName());
+            RegisteredUser registeredUser = userDetailsService.findUserByMail(principal.getName());
             List<OrderModel> ordersList =  new ArrayList<>();
             orderService.getOrdersByUser(registeredUser).forEach(order ->
                     ordersList.add(OrderModel.toModel(order)));
             return ResponseEntity.ok(ordersList);
-        } catch (RegisteredUserNotFoundException e) {
+        } catch (UsernameNotFoundException e) {
             return ResponseEntity.badRequest().body(e);
         }
     }
@@ -49,17 +49,17 @@ public class CabinetController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String mail = auth.getName();
         try {
-            RegisteredUser user = registeredUserService.findByMail(mail);
+            RegisteredUser user = userDetailsService.findUserByMail(mail);
             if(!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
                 return ResponseEntity.badRequest().body("Пароль не верен ");
             }
             if(!request.getNewPassword().equals(request.getNewPasswordConfirm())) {
                 return ResponseEntity.badRequest().body("Пароли не совпадают");
             }
-            registeredUserService.updateUserPassword(user, passwordEncoder.encode(request.getNewPassword()));
+            userDetailsService.updateUserPassword(user, passwordEncoder.encode(request.getNewPassword()));
             return ResponseEntity.ok("Пароль обновлен");
         }
-        catch (RegisteredUserNotFoundException e) {
+        catch (UsernameNotFoundException e) {
             return ResponseEntity.badRequest().body("Пользователь не найден");
         }
     }

@@ -4,9 +4,10 @@ package com.pizzeriaweb.bokoffpizza.controller;
 import com.pizzeriaweb.bokoffpizza.entity.RegisteredUser;
 import com.pizzeriaweb.bokoffpizza.exception.RegisteredUserNotFoundException;
 import com.pizzeriaweb.bokoffpizza.rest.UserListDTO;
-import com.pizzeriaweb.bokoffpizza.service.RegisteredUserService;
+import com.pizzeriaweb.bokoffpizza.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -17,11 +18,11 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    RegisteredUserService registeredUserService;
+    UserDetailsServiceImpl userDetailsService;
 
     @GetMapping("/users")
     public ResponseEntity<?> getUsersMails() {
-        List<RegisteredUser> usersList = registeredUserService.findAll();
+        List<RegisteredUser> usersList = userDetailsService.findAll();
         List<String> mails = new ArrayList<>();
         for(RegisteredUser user : usersList) {
             mails.add(user.getMail());
@@ -34,11 +35,11 @@ public class UserController {
         List<String> badMails = new ArrayList<>();
         for(String mail : banList.getMails()) {
             try {
-                RegisteredUser user = registeredUserService.findByMail(mail);
+                RegisteredUser user = userDetailsService.findUserByMail(mail);
                 user.setBanned(true);
-                registeredUserService.saveUser(user);
+                userDetailsService.saveUser(user);
 
-            } catch (RegisteredUserNotFoundException e) {
+            } catch (UsernameNotFoundException e) {
                 badMails.add(mail);
             }
         }
@@ -58,9 +59,9 @@ public class UserController {
         List<String> badMails = new ArrayList<>();
         for(String mail : request.getMails()) {
             try {
-                RegisteredUser user = registeredUserService.findByMail(mail);
-                registeredUserService.deleteUser(user);
-            } catch (RegisteredUserNotFoundException e) {
+                RegisteredUser user = userDetailsService.findUserByMail(mail);
+                userDetailsService.deleteUser(user);
+            } catch (UsernameNotFoundException e) {
                 badMails.add(mail);
             }
         }

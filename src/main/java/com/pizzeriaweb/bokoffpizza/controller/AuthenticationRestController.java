@@ -48,11 +48,8 @@ public class AuthenticationRestController {
                 return ResponseEntity.badRequest().body("Пользователь не найден");
             }
 
-            Set<String> roles = new HashSet<>();
-            for(Role role : user.getRoles()) {
-                roles.add(role.getAuthority());
-            }
-            String token = jwtTokenProvider.createToken(request.getMail(), roles);
+
+            String token = jwtTokenProvider.createToken(request.getMail(), user.getRole().toString());
             Map<Object, Object> response = new HashMap<>();
             response.put("mail", request.getMail());
             response.put("token", token);
