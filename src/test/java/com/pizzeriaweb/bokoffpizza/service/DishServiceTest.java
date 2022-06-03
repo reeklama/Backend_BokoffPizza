@@ -63,9 +63,7 @@ class DishServiceTest {
         Mockito.doReturn(dishes)
                 .when(dishRepository)
                 .findAll();
-        assertThrows(EmptyDishesListException.class, () -> {
-            dishService.getDishes();
-        });
+        assertThrows(EmptyDishesListException.class, () -> dishService.getDishes());
         Mockito.verify(dishRepository, Mockito.times(1)).findAll();
     }
 
@@ -134,9 +132,7 @@ class DishServiceTest {
 
         dishModel.setDishSizeModels(dishSizeModels);
 
-        assertThrows(ProductNotFoundException.class, () -> {
-            dishService.addDish(dishModel);;
-        });
+        assertThrows(ProductNotFoundException.class, () -> dishService.addDish(dishModel));
     }
 
     @Test
@@ -171,7 +167,7 @@ class DishServiceTest {
     }
 
     @Test
-    void findDishByName() {
+    void findDishByName() throws DishNotFoundException {
         Dish dish = new Dish();
         dish.setName("Pizza");
 
@@ -234,15 +230,13 @@ class DishServiceTest {
     }
 
     @Test
-    void updateDishDishNotFound() throws ProductNotFoundException, DishNotFoundException {
+    void updateDishDishNotFound() {
         String oldDishName = "Pizza";
         DishModel newDish = new DishModel();
         newDish.setName("newPizza");
         newDish.setPictureURL("picture");
 
-        assertThrows(DishNotFoundException.class, () -> {
-            dishService.updateDish(oldDishName, newDish);;
-        });
+        assertThrows(DishNotFoundException.class, () -> dishService.updateDish(oldDishName, newDish));
 
         Mockito.verify(dishRepository, Mockito.times(1)).findByName(oldDishName);
     }
@@ -270,9 +264,7 @@ class DishServiceTest {
                 .when(dishRepository)
                 .findByName(oldDishName);
 
-        assertThrows(ProductNotFoundException.class, () -> {
-            dishService.updateDish(oldDishName, newDish);;
-        });
+        assertThrows(ProductNotFoundException.class, () -> dishService.updateDish(oldDishName, newDish));
         Mockito.verify(dishRepository, Mockito.times(1)).findByName(oldDishName);
         Mockito.verify(productRepository, Mockito.times(1)).findByName(product.getName());
     }
