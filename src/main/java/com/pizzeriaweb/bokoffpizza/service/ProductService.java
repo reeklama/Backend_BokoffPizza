@@ -14,9 +14,9 @@ public class ProductService {
     @Autowired
     ProductRepository productRepository;
 
-    public List<Product> getProducts() throws Exception {
+    public List<Product> getProducts() throws EmptyProductsListException {
         List<Product> products = productRepository.findAll();
-        if (products.size() == 0){
+        if (products.isEmpty()){
             throw new EmptyProductsListException("Список ингредиентов пуст");
         }
         return products;

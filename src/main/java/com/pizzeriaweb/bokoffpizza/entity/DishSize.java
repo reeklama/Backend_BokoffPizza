@@ -15,7 +15,7 @@ public class DishSize {
     public DishSize() {
     }
 
-    public DishSize(Dish dish, String unit, Integer size, Integer price) {
+    public DishSize(Dish dish, Integer size, Integer price) {
         this.dish = dish;
         this.size = size;
         this.price = price;

@@ -13,8 +13,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 class DishSizeServiceTest {
@@ -35,12 +33,12 @@ class DishSizeServiceTest {
 
         Mockito.doReturn(dishSize)
                 .when(dishSizeRepository)
-                .findDishSizeByDish_idAndSize(dish.getId(), size);
+                .findDishSizeByDishIdAndSize(dish.getId(), size);
 
         DishSize testDishSize = dishSizeService.findByDishAndSize(dish, size);
 
         assertThat(testDishSize, notNullValue());
-        Mockito.verify(dishSizeRepository, Mockito.times(1)).findDishSizeByDish_idAndSize(dish.getId(), size);
+        Mockito.verify(dishSizeRepository, Mockito.times(1)).findDishSizeByDishIdAndSize(dish.getId(), size);
     }
 
     @Test

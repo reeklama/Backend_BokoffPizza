@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface DishSizeRepository extends JpaRepository<DishSize, Long> {
-    DishSize findDishSizeByDish_idAndSize(Long dish_id, Integer size);
+    DishSize findDishSizeByDishIdAndSize(Long dishId, Integer size);
     List<DishSize> findByDish(Dish dish);
 }

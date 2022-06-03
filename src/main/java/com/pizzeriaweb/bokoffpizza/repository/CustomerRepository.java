@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
     @Query(value = "SELECT * FROM CUSTOMERS WHERE PHONE_NUMBER = ?1", nativeQuery = true)
-    Customer findCustomerByPhoneNumber(String phone_number);
+    Customer findCustomerByPhoneNumber(String phoneNumber);
 }

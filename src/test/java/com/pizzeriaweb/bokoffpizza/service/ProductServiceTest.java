@@ -48,15 +48,31 @@ class ProductServiceTest {
     }
 
     @Test
-    void addProduct() {
-
+    void addProduct1() {
         productService.addProduct("cheese");
         Mockito.verify(productRepository, Mockito.times(1)).save(ArgumentMatchers.any(Product.class));
         Mockito.verify(productRepository, Mockito.times(1)).findByName("cheese");
     }
 
     @Test
-    void deleteProduct() {
+    void addProduct2() {
+        Mockito.doReturn(new Product())
+                .when(productRepository)
+                .findByName("cheese");
+        productService.addProduct("cheese");
+        Mockito.verify(productRepository, Mockito.times(0)).save(ArgumentMatchers.any(Product.class));
+        Mockito.verify(productRepository, Mockito.times(1)).findByName("cheese");
+    }
+
+    @Test
+    void deleteProduct1() {
+        productService.deleteProduct("cheese");
+        Mockito.verify(productRepository, Mockito.times(0)).delete(ArgumentMatchers.any(Product.class));
+        Mockito.verify(productRepository, Mockito.times(1)).findByName("cheese");
+    }
+
+    @Test
+    void deleteProduct2() {
         Product product = new Product();
         Set<Dish> dishSet = new HashSet<>();
         Dish dish = new Dish();

@@ -13,8 +13,6 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
@@ -222,7 +220,7 @@ class DishServiceTest {
 
         Mockito.doReturn(dishSize)
                 .when(dishSizeRepository)
-                .findDishSizeByDish_idAndSize(dish.getId(), dishSizeModel.getSize());
+                .findDishSizeByDishIdAndSize(dish.getId(), dishSizeModel.getSize());
 
         dishService.updateDish(oldDishName, newDish);
         Mockito.verify(dishRepository, Mockito.times(1)).save(ArgumentMatchers.isNotNull());

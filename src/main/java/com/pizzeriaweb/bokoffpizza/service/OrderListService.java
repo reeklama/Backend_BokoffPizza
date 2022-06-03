@@ -14,5 +14,4 @@ public class OrderListService {
     public void saveOrderList(OrderList orderList) {
         orderListRepository.save(orderList);
     }
-
 }

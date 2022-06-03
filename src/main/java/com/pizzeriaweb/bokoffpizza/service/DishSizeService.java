@@ -13,7 +13,7 @@ public class DishSizeService {
     DishSizeRepository dishSizeRepository;
 
     public DishSize findByDishAndSize(Dish dish, Integer size) {
-        return dishSizeRepository.findDishSizeByDish_idAndSize(dish.getId(), size);
+        return dishSizeRepository.findDishSizeByDishIdAndSize(dish.getId(), size);
     }
 
     public void save(DishSize dishSize) {

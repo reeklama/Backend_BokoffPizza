@@ -31,9 +31,9 @@ public class DishService {
     @Autowired
     DishSizeRepository dishSizeRepository;
 
-    public List<Dish> getDishes() throws Exception {
+    public List<Dish> getDishes() throws EmptyDishesListException {
         List<Dish> dishes = dishRepository.findAll();
-        if (dishes.size() == 0) {
+        if (dishes.isEmpty()) {
             throw new EmptyDishesListException("Список блюд пуст");
         }
         return dishes;
@@ -93,7 +93,7 @@ public class DishService {
         Set<Product> productSet = productModelSetToProductSet(newDish.getProductModels());
         dish.setProducts(productSet);
         for (DishSizeModel dishSizeModel : newDish.getDishSizeModels()) {
-            DishSize dishSize = dishSizeRepository.findDishSizeByDish_idAndSize(dish.getId(), dishSizeModel.getSize());
+            DishSize dishSize = dishSizeRepository.findDishSizeByDishIdAndSize(dish.getId(), dishSizeModel.getSize());
             dishSize.setPrice(dishSizeModel.getPrice());
             dishSizeRepository.save(dishSize);
         }
