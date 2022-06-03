@@ -25,9 +25,9 @@ public class CustomerService {
 
     public Customer setCustomerByRequest(OrderRequestDTO request) {
         Customer customer = new Customer();
-        customer.setFirst_name(request.getFirst_name());
+        customer.setFirstName(request.getFirstName());
         customer.setAddress(request.getAddress());
-        customer.setPhone_number(request.getPhone_number());
+        customer.setPhoneNumber(request.getPhoneNumber());
         return customer;
     }
 
@@ -35,7 +35,7 @@ public class CustomerService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         boolean isLoggedIn = auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken);
 
-        Customer customerByPhone = customerRepository.findCustomerByPhoneNumber(request.getPhone_number());
+        Customer customerByPhone = customerRepository.findCustomerByPhoneNumber(request.getPhoneNumber());
         if(customerByPhone != null) {
             return customerByPhone;
         }

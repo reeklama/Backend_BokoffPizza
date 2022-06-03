@@ -7,9 +7,9 @@ import java.util.List;
 @Data
 public class OrderRequestDTO {
 
-   private String first_name;
+   private String firstName;
 
-   private String phone_number;
+   private String phoneNumber;
 
    private String address;
 
