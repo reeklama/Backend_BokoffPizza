@@ -1,5 +1,6 @@
 package com.pizzeriaweb.bokoffpizza.service;
 
+import com.pizzeriaweb.bokoffpizza.entity.Dish;
 import com.pizzeriaweb.bokoffpizza.entity.Product;
 import com.pizzeriaweb.bokoffpizza.exception.EmptyProductsListException;
 import com.pizzeriaweb.bokoffpizza.repository.ProductRepository;
@@ -15,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -56,7 +58,11 @@ class ProductServiceTest {
     @Test
     void deleteProduct() {
         Product product = new Product();
-        product.setDishes(new HashSet<>());
+        Set<Dish> dishSet = new HashSet<>();
+        Dish dish = new Dish();
+        dish.setProducts(new HashSet<>());
+        dishSet.add(dish);
+        product.setDishes(dishSet);
         Mockito.doReturn(product)
                 .when(productRepository)
                 .findByName("cheese");
