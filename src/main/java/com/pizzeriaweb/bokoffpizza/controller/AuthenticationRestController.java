@@ -41,13 +41,14 @@ public class AuthenticationRestController {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getMail(), request.getPassword()));
             RegisteredUser user = userRepository.findByMail(request.getMail());
-            if(user.isBanned()) {
-                return ResponseEntity.ok("Пользователь заблокирован");
-            }
+
             if(user == null) {
                 return ResponseEntity.badRequest().body("Пользователь не найден");
             }
 
+            if(user.isBanned()) {
+                return ResponseEntity.ok("Пользователь заблокирован");
+            }
 
             String token = jwtTokenProvider.createToken(request.getMail(), user.getRole().toString());
             Map<Object, Object> response = new HashMap<>();

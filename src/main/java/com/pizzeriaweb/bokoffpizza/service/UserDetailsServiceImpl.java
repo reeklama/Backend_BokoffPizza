@@ -62,7 +62,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (registeredUser == null)
             throw new RegisteredUserNotFoundException("Не найден пользователь с email: " + mail);
 
-        if (registeredUser.getRole().equals(roleName))
+        if (registeredUser.getRole().getName().equals(roleName))
             return;
 
         registeredUser.setRole(role);

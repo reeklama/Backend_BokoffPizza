@@ -18,8 +18,8 @@ public class CustomerModel {
     public static CustomerModel toModel (Customer customer) {
         CustomerModel customerModel = new CustomerModel();
         customerModel.setId(customer.getId());
-        customerModel.setFirst_name(customer.getFirst_name());
-        customerModel.setPhone_number(customer.getPhone_number());
+        customerModel.setFirst_name(customer.getFirstName());
+        customerModel.setPhone_number(customer.getPhoneNumber());
         customerModel.setAddress(customer.getAddress());
         return customerModel;
     }

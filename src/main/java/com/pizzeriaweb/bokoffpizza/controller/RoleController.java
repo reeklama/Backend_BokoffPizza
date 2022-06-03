@@ -13,7 +13,7 @@ public class RoleController {
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
-    @PostMapping("/setRole")
+    @PutMapping("/setRole")
     public ResponseEntity<?> setRole(@RequestBody AddRoleRequest request) {
         try {
             userDetailsService.setRole(request.getMail(), request.getRoleName());
