@@ -44,7 +44,7 @@ public class AuthenticationRestController {
                 return ResponseEntity.ok("Пользователь заблокирован");
             }
 
-            String token = jwtTokenProvider.createToken(request.getMail(), user.getRole().toString());
+            String token = jwtTokenProvider.createToken(request.getMail(), user.getRole().getName());
             Map<Object, Object> response = new HashMap<>();
             response.put("mail", request.getMail());
             response.put("token", token);
