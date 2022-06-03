@@ -1,7 +1,6 @@
 package com.pizzeriaweb.bokoffpizza.controller;
 
 import com.pizzeriaweb.bokoffpizza.entity.RegisteredUser;
-import com.pizzeriaweb.bokoffpizza.entity.Role;
 import com.pizzeriaweb.bokoffpizza.repository.RegisteredUserRepository;
 import com.pizzeriaweb.bokoffpizza.rest.AuthenticationRequestDTO;
 import com.pizzeriaweb.bokoffpizza.security.JwtTokenProvider;
@@ -10,16 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 @CrossOrigin( origins = "*", maxAge = 3500)
 @RestController
@@ -27,8 +23,8 @@ import java.util.Set;
 public class AuthenticationRestController {
 
     private final AuthenticationManager authenticationManager;
-    private RegisteredUserRepository userRepository;
-    private JwtTokenProvider jwtTokenProvider;
+    private final RegisteredUserRepository userRepository;
+    private final JwtTokenProvider jwtTokenProvider;
 
     public AuthenticationRestController(AuthenticationManager authenticationManager, RegisteredUserRepository userRepository, JwtTokenProvider jwtTokenProvider) {
         this.authenticationManager = authenticationManager;
@@ -41,13 +37,12 @@ public class AuthenticationRestController {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getMail(), request.getPassword()));
             RegisteredUser user = userRepository.findByMail(request.getMail());
-            if(user.isBanned()) {
-                return ResponseEntity.ok("Пользователь заблокирован");
-            }
             if(user == null) {
                 return ResponseEntity.badRequest().body("Пользователь не найден");
             }
-
+            if(user.isBanned()) {
+                return ResponseEntity.ok("Пользователь заблокирован");
+            }
 
             String token = jwtTokenProvider.createToken(request.getMail(), user.getRole().toString());
             Map<Object, Object> response = new HashMap<>();

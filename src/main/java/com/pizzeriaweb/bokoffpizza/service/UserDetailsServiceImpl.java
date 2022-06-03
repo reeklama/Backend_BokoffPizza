@@ -5,18 +5,14 @@ import com.pizzeriaweb.bokoffpizza.entity.RegisteredUser;
 import com.pizzeriaweb.bokoffpizza.entity.Role;
 import com.pizzeriaweb.bokoffpizza.exception.RegisteredUserNotFoundException;
 import com.pizzeriaweb.bokoffpizza.exception.RoleNotFoundException;
-import com.pizzeriaweb.bokoffpizza.exception.UserAlreadyExistsException;
 import com.pizzeriaweb.bokoffpizza.repository.RegisteredUserRepository;
 import com.pizzeriaweb.bokoffpizza.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service("userDetailsServiceImpl")
@@ -62,7 +58,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (registeredUser == null)
             throw new RegisteredUserNotFoundException("Не найден пользователь с email: " + mail);
 
-        if (registeredUser.getRole().equals(roleName))
+        if (registeredUser.getRole().getName().equals(roleName))
             return;
 
         registeredUser.setRole(role);

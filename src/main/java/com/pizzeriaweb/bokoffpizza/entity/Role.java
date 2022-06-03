@@ -4,7 +4,6 @@ import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Table(name = "roles")
@@ -15,9 +14,6 @@ public class Role implements GrantedAuthority {
 
     private String name;
 
-    @Transient
-    @OneToMany(mappedBy = "role", cascade=CascadeType.REMOVE)
-    private Set<RegisteredUser> registeredUsers;
     public Role() {
     }
 

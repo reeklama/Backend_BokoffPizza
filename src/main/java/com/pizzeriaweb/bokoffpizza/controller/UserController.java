@@ -2,7 +2,6 @@ package com.pizzeriaweb.bokoffpizza.controller;
 
 
 import com.pizzeriaweb.bokoffpizza.entity.RegisteredUser;
-import com.pizzeriaweb.bokoffpizza.exception.RegisteredUserNotFoundException;
 import com.pizzeriaweb.bokoffpizza.rest.UserListDTO;
 import com.pizzeriaweb.bokoffpizza.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +45,7 @@ public class UserController {
         if(badMails.size() > 0) {
             StringBuilder badMailsSb = new StringBuilder();
             for(String badMail : badMails) {
-                badMailsSb.append(badMail + "\n");
+                badMailsSb.append(badMail).append("\n");
             }
             return ResponseEntity.ok("Пользователи с такими почтами не найдены: " + badMailsSb + "Остальные указанные пользователи заблокированы");
         }
@@ -68,7 +67,7 @@ public class UserController {
         if(badMails.size() > 0) {
             StringBuilder badMailsSb = new StringBuilder();
             for(String badMail : badMails) {
-                badMailsSb.append(badMail + "\n");
+                badMailsSb.append(badMail).append("\n");
             }
             return ResponseEntity.ok("Пользователи с такими почтами не найдены: " + badMailsSb + "Остальные указанные пользователи удалены");
         }

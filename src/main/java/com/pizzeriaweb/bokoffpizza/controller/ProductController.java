@@ -16,7 +16,7 @@ public class ProductController {
     @Autowired
     ProductService productService;
 
-    @GetMapping("/Product")
+    @GetMapping("/product")
     public ResponseEntity<?> getProductsList() {
         try {
             List<ProductModel> productModelList = new ArrayList<>();
@@ -27,13 +27,13 @@ public class ProductController {
         }
     }
 
-    @PostMapping("/Product")
+    @PostMapping("/product")
     public ResponseEntity<?> addProduct(@RequestBody ProductModel request) {
         productService.addProduct(request.getName());
         return ResponseEntity.ok("Ингредиент добавлен");
     }
 
-    @DeleteMapping("/Product")
+    @DeleteMapping("/product")
     public ResponseEntity<?> deleteProduct(@RequestBody ProductModel request) {
         productService.deleteProduct(request.getName());
         return ResponseEntity.ok("Ингредиент удалён");

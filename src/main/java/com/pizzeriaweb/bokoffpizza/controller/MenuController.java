@@ -6,6 +6,7 @@ import com.pizzeriaweb.bokoffpizza.rest.MenuUpdateRequestDTO;
 import com.pizzeriaweb.bokoffpizza.service.DishService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class MenuController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('MODERATOR')")
     public ResponseEntity<?> addDish(@RequestBody DishModel request){
         try {
             dishService.addDish(request);
@@ -42,6 +44,7 @@ public class MenuController {
     }
 
     @PutMapping
+    @PreAuthorize("hasRole('MODERATOR')")
     public ResponseEntity<?> updateDish(@RequestBody MenuUpdateRequestDTO request){
         try {
             dishService.updateDish(request.getOldDishName(), request.getNewDish());
@@ -52,6 +55,7 @@ public class MenuController {
     }
 
     @DeleteMapping
+    @PreAuthorize("hasRole('MODERATOR')")
     public ResponseEntity<?> deleteDish(@RequestBody DishModel request){
         dishService.deleteDish(request);
         return ResponseEntity.ok("success");

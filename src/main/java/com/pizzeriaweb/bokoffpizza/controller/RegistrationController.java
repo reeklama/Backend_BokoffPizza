@@ -3,9 +3,6 @@ package com.pizzeriaweb.bokoffpizza.controller;
 
 import com.pizzeriaweb.bokoffpizza.entity.RegisteredUser;
 import com.pizzeriaweb.bokoffpizza.entity.Role;
-import com.pizzeriaweb.bokoffpizza.exception.PasswordAndPasswordConfirmNotEqual;
-import com.pizzeriaweb.bokoffpizza.exception.TooShortPasswordException;
-import com.pizzeriaweb.bokoffpizza.exception.UserAlreadyExistsException;
 import com.pizzeriaweb.bokoffpizza.repository.RegisteredUserRepository;
 import com.pizzeriaweb.bokoffpizza.rest.RegistrationRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.regex.Pattern;
 
 @CrossOrigin( origins = "*", maxAge = 3500)
@@ -21,7 +17,7 @@ import java.util.regex.Pattern;
 @RequestMapping("/registration")
 public class RegistrationController {
 
-    private static Integer minPasswordLength = 6;
+    private static final Integer minPasswordLength = 6;
     @Autowired
     RegisteredUserRepository userRepository;
 

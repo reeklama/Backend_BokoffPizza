@@ -6,7 +6,6 @@ import com.pizzeriaweb.bokoffpizza.entity.FavoritesId;
 import com.pizzeriaweb.bokoffpizza.entity.RegisteredUser;
 import com.pizzeriaweb.bokoffpizza.exception.DishNotFoundException;
 import com.pizzeriaweb.bokoffpizza.exception.FavoriteDishNotFoundException;
-import com.pizzeriaweb.bokoffpizza.exception.RegisteredUserNotFoundException;
 import com.pizzeriaweb.bokoffpizza.model.DishModel;
 import com.pizzeriaweb.bokoffpizza.repository.FavoritesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ import java.util.stream.Collectors;
 public class FavoritesService {
 
     @Autowired
-    RegisteredUserService registeredUserService;
+    UserDetailsServiceImpl registeredUserService;
 
     @Autowired
     FavoritesRepository favoritesRepository;
@@ -27,16 +26,16 @@ public class FavoritesService {
     @Autowired
     DishService dishService;
 
-    public List<DishModel> getFavoritesDishesByMais(String mail) throws RegisteredUserNotFoundException {
-        RegisteredUser registeredUser = registeredUserService.findByMail(mail);
+    public List<DishModel> getFavoritesDishesByMais(String mail) {
+        RegisteredUser registeredUser = registeredUserService.findUserByMail(mail);
         List<Favorites> favorites = favoritesRepository.findByRegisteredUser(registeredUser);
         return favorites.stream()
                 .map(favorites1 -> DishModel.toModel(favorites1.getDish()))
                 .collect(Collectors.toList());
     }
 
-    public void addFavoriteDish(String mail, String dishName) throws RegisteredUserNotFoundException, DishNotFoundException {
-        RegisteredUser registeredUser = registeredUserService.findByMail(mail);
+    public void addFavoriteDish(String mail, String dishName) throws DishNotFoundException {
+        RegisteredUser registeredUser = registeredUserService.findUserByMail(mail);
         Dish dish = dishService.findDishByName(dishName);
         FavoritesId favoritesId = new FavoritesId(dish, registeredUser);
         Favorites favorites = new Favorites();
@@ -44,8 +43,8 @@ public class FavoritesService {
         favoritesRepository.save(favorites);
     }
 
-    public void deleteFavoriteDish(String mail, String dishName) throws RegisteredUserNotFoundException, DishNotFoundException, FavoriteDishNotFoundException {
-        RegisteredUser registeredUser = registeredUserService.findByMail(mail);
+    public void deleteFavoriteDish(String mail, String dishName) throws DishNotFoundException, FavoriteDishNotFoundException {
+        RegisteredUser registeredUser = registeredUserService.findUserByMail(mail);
         Dish dish = dishService.findDishByName(dishName);
         Favorites favorites = favoritesRepository.findByRegisteredUserAndDish(registeredUser, dish);
         if (favorites == null){

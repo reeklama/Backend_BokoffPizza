@@ -2,23 +2,17 @@ package com.pizzeriaweb.bokoffpizza.service;
 
 import com.pizzeriaweb.bokoffpizza.entity.Dish;
 import com.pizzeriaweb.bokoffpizza.entity.Product;
-import com.pizzeriaweb.bokoffpizza.exception.EmptyDishesListException;
 import com.pizzeriaweb.bokoffpizza.exception.EmptyProductsListException;
-import com.pizzeriaweb.bokoffpizza.repository.DishRepository;
 import com.pizzeriaweb.bokoffpizza.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductService {
     @Autowired
     ProductRepository productRepository;
-
-    @Autowired
-    DishRepository dishRepository;
 
     public List<Product> getProducts() throws Exception {
         List<Product> products = productRepository.findAll();
