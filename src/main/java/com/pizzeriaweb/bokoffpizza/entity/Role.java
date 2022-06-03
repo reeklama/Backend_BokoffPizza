@@ -16,7 +16,7 @@ public class Role implements GrantedAuthority {
     private String name;
 
     @Transient
-    @ManyToMany(mappedBy = "roles")
+    @OneToMany(mappedBy = "role", cascade=CascadeType.REMOVE)
     private Set<RegisteredUser> registeredUsers;
     public Role() {
     }

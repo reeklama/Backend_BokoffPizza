@@ -35,6 +35,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/registration").not().fullyAuthenticated()
                 .antMatchers("/auth/login").permitAll()
                 .antMatchers("/cart").permitAll()
+                .antMatchers("/ban").hasRole("SYSADMIN")
+                .antMatchers("/deleteuser").hasRole("SYSADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()

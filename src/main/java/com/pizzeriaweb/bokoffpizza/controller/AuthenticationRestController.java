@@ -1,7 +1,9 @@
-package com.pizzeriaweb.bokoffpizza.rest;
+package com.pizzeriaweb.bokoffpizza.controller;
 
 import com.pizzeriaweb.bokoffpizza.entity.RegisteredUser;
+import com.pizzeriaweb.bokoffpizza.entity.Role;
 import com.pizzeriaweb.bokoffpizza.repository.RegisteredUserRepository;
+import com.pizzeriaweb.bokoffpizza.rest.AuthenticationRequestDTO;
 import com.pizzeriaweb.bokoffpizza.security.JwtTokenProvider;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +17,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 @CrossOrigin( origins = "*", maxAge = 3500)
 @RestController
@@ -37,10 +41,15 @@ public class AuthenticationRestController {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getMail(), request.getPassword()));
             RegisteredUser user = userRepository.findByMail(request.getMail());
-            if(user == null) {
-                throw new UsernameNotFoundException("Пользователь не найден");
+            if(user.isBanned()) {
+                return ResponseEntity.ok("Пользователь заблокирован");
             }
-            String token = jwtTokenProvider.createToken(request.getMail(), user.getRoles().stream().findFirst().get().toString());
+            if(user == null) {
+                return ResponseEntity.badRequest().body("Пользователь не найден");
+            }
+
+
+            String token = jwtTokenProvider.createToken(request.getMail(), user.getRole().toString());
             Map<Object, Object> response = new HashMap<>();
             response.put("mail", request.getMail());
             response.put("token", token);

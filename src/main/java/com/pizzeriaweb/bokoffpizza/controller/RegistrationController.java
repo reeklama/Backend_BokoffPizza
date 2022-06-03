@@ -1,11 +1,13 @@
-package com.pizzeriaweb.bokoffpizza.rest;
+package com.pizzeriaweb.bokoffpizza.controller;
 
 
 import com.pizzeriaweb.bokoffpizza.entity.RegisteredUser;
 import com.pizzeriaweb.bokoffpizza.entity.Role;
 import com.pizzeriaweb.bokoffpizza.exception.PasswordAndPasswordConfirmNotEqual;
+import com.pizzeriaweb.bokoffpizza.exception.TooShortPasswordException;
 import com.pizzeriaweb.bokoffpizza.exception.UserAlreadyExistsException;
 import com.pizzeriaweb.bokoffpizza.repository.RegisteredUserRepository;
+import com.pizzeriaweb.bokoffpizza.rest.RegistrationRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +20,8 @@ import java.util.regex.Pattern;
 @RestController
 @RequestMapping("/registration")
 public class RegistrationController {
+
+    private static Integer minPasswordLength = 6;
     @Autowired
     RegisteredUserRepository userRepository;
 
@@ -27,21 +31,25 @@ public class RegistrationController {
     final String regexPattern = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
 
     @PostMapping()
-    public ResponseEntity<?> register(@RequestBody RegistrationRequestDTO request) throws UserAlreadyExistsException, PasswordAndPasswordConfirmNotEqual {
+    public ResponseEntity<?> register(@RequestBody RegistrationRequestDTO request) {
 
         if(!Pattern.compile(regexPattern).matcher(request.getMail()).matches()) {
             return ResponseEntity.badRequest().body("Некорректный формат почты");
         }
         if (userRepository.findByMail(request.getMail()) != null) {
-            throw new UserAlreadyExistsException("Пользователь с такой почтой уже существует");
+            return ResponseEntity.badRequest().body("Пользователь с такой почтой уже существует");
         }
         RegisteredUser user = new RegisteredUser();
         user.setMail(request.getMail());
         if(!request.getPassword().equals(request.getPasswordConfirm())) {
-            throw new PasswordAndPasswordConfirmNotEqual("Пароли не совпадают");
+            return ResponseEntity.badRequest().body("Пароли не совпадают");
+        }
+        if(request.getPassword().length() < minPasswordLength) {
+            return ResponseEntity.badRequest().body("Минимальная длина пароля - " + minPasswordLength + " символов");
         }
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
+        user.setRole(new Role(1L, "ROLE_USER"));
+        user.setBanned(false);
         userRepository.save(user);
         return ResponseEntity.ok("Пользователь зарегистрирован!");
     }

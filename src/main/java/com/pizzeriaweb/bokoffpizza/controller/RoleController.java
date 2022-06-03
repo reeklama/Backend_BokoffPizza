@@ -1,7 +1,7 @@
 package com.pizzeriaweb.bokoffpizza.controller;
 
-import com.pizzeriaweb.bokoffpizza.rest.AddRoleRequestDTO;
-import com.pizzeriaweb.bokoffpizza.service.RegisteredUserService;
+import com.pizzeriaweb.bokoffpizza.rest.AddRoleRequest;
+import com.pizzeriaweb.bokoffpizza.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.*;
 public class RoleController {
 
     @Autowired
-    RegisteredUserService registeredUserService;
+    UserDetailsServiceImpl userDetailsService;
 
-    @PostMapping("/addRole")
-    public ResponseEntity<?> addRole(@RequestBody AddRoleRequestDTO request) {
+    @PostMapping("/setRole")
+    public ResponseEntity<?> setRole(@RequestBody AddRoleRequest request) {
         try {
-            registeredUserService.addRole(request.getMail(), request.getRoleName());
-            return ResponseEntity.ok("Роль добавлена");
+            userDetailsService.setRole(request.getMail(), request.getRoleName());
+            return ResponseEntity.ok("Роль изменена");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

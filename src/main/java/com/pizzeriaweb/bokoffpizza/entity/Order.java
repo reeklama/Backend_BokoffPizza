@@ -21,5 +21,5 @@ public class Order {
     private Customer customer;
 
     @OneToMany(mappedBy = "order")
-    private List<OrderList> orderLists;
+    private List<OrderList> orderListSet;
 }
